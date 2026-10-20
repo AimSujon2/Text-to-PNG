@@ -444,10 +444,10 @@ function layoutCard(paras,size,ctx,maxW){
 async function drawCard(info,logoImg,opt){
  const c=document.createElement('canvas');c.width=CW;c.height=CH;const ctx=c.getContext('2d');
  ctx.fillStyle='#edf0f2';ctx.fillRect(0,0,CW,CH);
- drawCardDeco(ctx);
+ // drawCardDeco(ctx);
  // সাদা কার্ড
  rr(ctx,136,137,959,801,26);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#d3d6da';ctx.lineWidth=2;ctx.stroke();
- drawCardMath(ctx);
+ // drawCardMath(ctx);
  if(logoImg){ctx.save();ctx.globalAlpha=.13;const ww=480,hh=ww*logoImg.naturalHeight/logoImg.naturalWidth;ctx.drawImage(logoImg,618-ww/2,567-hh/2,ww,hh);ctx.restore();}
  // লেখা
  const zoneTop=196,zoneH=548,maxW=815,x0=208;
