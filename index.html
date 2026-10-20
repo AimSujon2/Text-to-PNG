@@ -409,8 +409,9 @@ function parseCardBlock(block){
 function qFirst(line,mode){
  const numRe=/^\s*(?:প্রশ্ন\s*)?[০-৯0-9]{1,3}\s*[.)।ঃ:]\s*/;
  if(mode==='number')return line;
- if(/^\s*প্রশ্ন\s*[:：]/.test(line))return mode==='none'?line.replace(/^\s*প্রশ্ন\s*[:：]\s*/,''):line;
- const rest=line.replace(numRe,'');
+ 
+ let rest = line.replace(numRe,'').replace(/^\s*প্রশ্ন\s*[:：]\s*/, '');
+ 
  return mode==='label'?'প্রশ্ন: '+rest:rest;
 }
 function drawCardDeco(ctx){
