@@ -58,8 +58,9 @@ canvas{width:100%;height:auto;max-width:440px;background:white;box-shadow:0 4px 
 উত্তর: ২০ দিন
 ব্যাখ্যা: ঐকিক নিয়মে: দিন = (আগের লোকসংখ্যা × আগের দিন) ÷ বর্তমান মোট লোকসংখ্যা। (৩০ × ২৪) ÷ ৩৬ = ২০ দিন।"></textarea>
 <div class="row">
-<div><label for="fontSize">ডিফল্ট লেখার সাইজ (px)</label><div class="row" style="align-items:center"><button type="button" id="fontDown" aria-label="ফন্ট ছোট করুন">−</button><input id="fontSize" type="number" min="18" max="48" step="1" value="30" style="min-width:70px;text-align:center"><button type="button" id="fontUp" aria-label="ফন্ট বড় করুন">+</button></div><input id="fontSlider" type="range" min="18" max="48" step="1" value="30" aria-label="ফন্ট সাইজ স্লাইডার"></div>
-<div style="flex:0 0 120px;min-width:100px"><label for="marginMm">ডিফল্ট মার্জিন (মিমি)</label><input id="marginMm" type="number" min="0" max="10" step="0.5" value="3.5"></div>
+<div><label for="fontSize">ডিফল্ট লেখার সাইজ (px)</label><div class="row" style="align-items:center"><button type="button" id="fontDown" aria-label="ফন্ট ছোট করুন">−</button><input id="fontSize" type="number" min="18" max="100" step="1" value="30" style="min-width:70px;text-align:center"><button type="button" id="fontUp" aria-label="ফন্ট বড় করুন">+</button></div><input id="fontSlider" type="range" min="18" max="100" step="1" value="30" aria-label="ফন্ট সাইজ স্লাইডার"></div>
+<div style="flex:0 0 120px;min-width:100px"><label for="marginMm">ডিফল্ট মার্জিন (মিমি)</label><input id="marginMm" type="number" min="0" max="10" step="0.5" value="7"></div>
+<div style="flex:0 0 140px;min-width:120px"><label for="gapPx">প্রশ্নের মাঝে ফাঁক (px)</label><input id="gapPx" type="number" min="0" max="150" step="2" value="32"></div>
 <div><label for="headerText">হেডারের পরীক্ষা</label><input id="headerText" value="BCS, NTRCA, PRIMARY, ADMISSION, GOVT JOB"></div>
 </div>
 <div class="actions"><button class="primary" id="renderBtn">প্রিভিউ তৈরি করুন</button><button id="autoBtn" title="৪টি প্রশ্ন প্রতি পেজে আঁটে এমন সবচেয়ে বড় সাইজ নেবে">৪টি/পেজ অটো সাইজ</button><button id="sampleBtn">নমুনা লেখা দিন</button><button id="clearBtn">মুছে ফেলুন</button></div>
@@ -71,7 +72,7 @@ canvas{width:100%;height:auto;max-width:440px;background:white;box-shadow:0 4px 
 <div class="pageSet" id="pageSet">
 <strong id="psTitle">এই পেজের আলাদা সেটিং</strong>
 <div class="row">
-<div style="flex:1.4"><label for="pgFont">লেখার সাইজ (px)</label><div class="stepper"><button type="button" id="pgFontDown" aria-label="এই পেজের ফন্ট ছোট করুন">−</button><input id="pgFont" type="number" min="18" max="48" step="1" disabled><button type="button" id="pgFontUp" aria-label="এই পেজের ফন্ট বড় করুন">+</button></div></div>
+<div style="flex:1.4"><label for="pgFont">লেখার সাইজ (px)</label><div class="stepper"><button type="button" id="pgFontDown" aria-label="এই পেজের ফন্ট ছোট করুন">−</button><input id="pgFont" type="number" min="18" max="100" step="1" disabled><button type="button" id="pgFontUp" aria-label="এই পেজের ফন্ট বড় করুন">+</button></div></div>
 <div style="flex:1"><label for="pgMargin">মার্জিন (মিমি)</label><input id="pgMargin" type="number" min="0" max="10" step="0.5" disabled></div>
 </div>
 <div class="actions" style="margin-top:10px"><button type="button" id="pgReset" disabled>এই পেজ ডিফল্টে ফেরান</button><button type="button" id="pgResetAll" disabled>সব পেজ ডিফল্টে ফেরান</button></div>
@@ -97,7 +98,7 @@ canvas{width:100%;height:auto;max-width:440px;background:white;box-shadow:0 4px 
 <div><label for="cLabel">প্রশ্নের শুরু</label><select id="cLabel"><option value="label">প্রশ্ন: (নম্বরের বদলে)</option><option value="number">নম্বর যেমন আছে তেমন</option><option value="none">কিছু না</option></select></div>
 </div>
 <div class="row">
-<div><label for="cFont">লেখার সাইজ (px)</label><div class="stepper"><button type="button" id="cFontDown" aria-label="ফন্ট ছোট করুন">−</button><input id="cFont" type="number" min="20" max="80" step="1" value="46"><button type="button" id="cFontUp" aria-label="ফন্ট বড় করুন">+</button></div></div>
+<div><label for="cFont">লেখার সাইজ (px)</label><div class="stepper"><button type="button" id="cFontDown" aria-label="ফন্ট ছোট করুন">−</button><input id="cFont" type="number" min="20" max="100" step="1" value="46"><button type="button" id="cFontUp" aria-label="ফন্ট বড় করুন">+</button></div></div>
 <div><label for="cBrand">পেজের নাম</label><input id="cBrand" value="StudyPulse"></div>
 </div>
 <div class="row">
@@ -176,11 +177,12 @@ async function loadBanglaFont(){
   fontReady=document.fonts.check('30px "Tiro Bangla"','অআক');
  }catch(e){}
 }
-const TOP=160, GAP=16, MM=3.78; // 1 মিমি ≈ 3.78px (96dpi)
+const TOP=160, MM=3.78; // 1 মিমি ≈ 3.78px (96dpi)
 let autoMode=true, overrides={}, pageMeta=[];
 function mmPx(mm){return Math.round(mm*MM);}
 function clampN(v,lo,hi,d){v=parseFloat(v);return isNaN(v)?d:Math.min(hi,Math.max(lo,v));}
-function globalMargin(){return clampN($('marginMm').value,0,10,3.5);}
+function getGap(){return Math.round(clampN($('gapPx').value,0,150,32));}
+function globalMargin(){return clampN($('marginMm').value,0,10,7);}
 function setFor(p,gFont,gMargin){
  const o=overrides[p]||{};
  return {font:o.font!=null?o.font:gFont, margin:o.margin!=null?o.margin:gMargin, ov:o.font!=null||o.margin!=null};
@@ -203,6 +205,7 @@ function prepareBlock(block, base, ctx, mpx){
 }
 // প্রতিটি পেজ নিজের ফন্ট ও মার্জিন অনুযায়ী ভরবে; যে প্রশ্ন আঁটে না সেটি পরের পেজে যাবে
 function packPages(blocks,gFont,gMargin){
+ const GAP=getGap();
  const mc=document.createElement('canvas').getContext('2d'),cache=new Map();
  const hOf=(i,font,mm)=>{const k=i+'|'+font+'|'+mm;if(!cache.has(k))cache.set(k,prepareBlock(blocks[i],font,mc,mmPx(mm)).reduce((a,l)=>a+l.height,0));return cache.get(k);};
  const pages=[];let i=0,p=0,over=0;
@@ -222,7 +225,7 @@ function autoFit(blocks){
  const gM=globalMargin(),n=blocks.length;
  for(let size=48;size>=18;size--){
   const {pages}=packPages(blocks,size,gM);
-  if(!pages.some(pg=>!pg.set.ov))return clampN($('fontSize').value,18,48,30);
+  if(!pages.some(pg=>!pg.set.ov))return clampN($('fontSize').value,18,100,30);
   const ok=pages.every((pg,k)=>pg.set.ov||k===pages.length-1||pg.idx.length>=4)&&(pages.length>1||pages[0].idx.length>=Math.min(4,n));
   if(ok)return size;
  }
@@ -252,7 +255,7 @@ async function drawPage(blocks,number,total,set){
    ctx.textBaseline='alphabetic';
    ctx.fillText(l.text,m,y+l.size);y+=l.height;
   }
-  y+=GAP;
+  y+=getGap();
  }
  return c;
 }
@@ -261,7 +264,7 @@ async function render(){
  const text=$('source').value.trim();if(!text){$('status').textContent='আগে প্রশ্নের লেখা পেস্ট করুন।';return;}
  const blocks=parseQuestions(text);if(!blocks.length){$('status').textContent='প্রশ্ন শনাক্ত করা যায়নি।';return;}
  if(autoMode){const f=autoFit(blocks);$('fontSize').value=f;$('fontSlider').value=f;}
- const gFont=clampN($('fontSize').value,18,48,30),gMargin=globalMargin();
+ const gFont=clampN($('fontSize').value,18,100,30),gMargin=globalMargin();
  const {pages:pk,over}=packPages(blocks,gFont,gMargin);
  pages=[];pageMeta=pk.map(pg=>pg.set);
  for(let i=0;i<pk.length;i++) pages.push(await drawPage(pk[i].idx.map(k=>blocks[k]),i+1,pk.length,pk[i].set));
@@ -360,20 +363,21 @@ $('prevBtn').onclick=()=>{if(pages.length){pageIndex=(pageIndex+pages.length-1)%
 $('nextBtn').onclick=()=>{if(pages.length){pageIndex=(pageIndex+1)%pages.length;showPage();}};
 $('downloadBtn').onclick=()=>pages.length&&download(pageIndex);
 $('downloadAllBtn').onclick=async()=>{for(let i=0;i<pages.length;i++){download(i);await new Promise(r=>setTimeout(r,250));}};
-function syncFont(v){autoMode=false;let n=Math.max(18,Math.min(48,parseInt(v,10)||30));$('fontSize').value=n;$('fontSlider').value=n;if(pages.length)render();}
+function syncFont(v){autoMode=false;let n=Math.max(18,Math.min(100,parseInt(v,10)||30));$('fontSize').value=n;$('fontSlider').value=n;if(pages.length)render();}
 $('fontSize').onchange=()=>syncFont($('fontSize').value);
 $('fontSlider').oninput=()=>syncFont($('fontSlider').value);
 $('fontDown').onclick=()=>syncFont(+$('fontSize').value-1);
 $('fontUp').onclick=()=>syncFont(+$('fontSize').value+1);
 $('autoBtn').onclick=()=>{autoMode=true;render();};
 function setPageOv(obj){if(!pages.length)return;overrides[pageIndex]=Object.assign(overrides[pageIndex]||{},obj);render();}
-$('pgFont').onchange=()=>setPageOv({font:clampN($('pgFont').value,18,48,30)});
-$('pgFontUp').onclick=()=>setPageOv({font:clampN((pageMeta[pageIndex]||{font:30}).font+1,18,48,30)});
-$('pgFontDown').onclick=()=>setPageOv({font:clampN((pageMeta[pageIndex]||{font:30}).font-1,18,48,30)});
-$('pgMargin').onchange=()=>setPageOv({margin:clampN($('pgMargin').value,0,10,3.5)});
+$('pgFont').onchange=()=>setPageOv({font:clampN($('pgFont').value,18,100,30)});
+$('pgFontUp').onclick=()=>setPageOv({font:clampN((pageMeta[pageIndex]||{font:30}).font+1,18,100,30)});
+$('pgFontDown').onclick=()=>setPageOv({font:clampN((pageMeta[pageIndex]||{font:30}).font-1,18,100,30)});
+$('pgMargin').onchange=()=>setPageOv({margin:clampN($('pgMargin').value,0,10,7)});
 $('pgReset').onclick=()=>{delete overrides[pageIndex];render();};
 $('pgResetAll').onclick=()=>{overrides={};render();};
 $('marginMm').onchange=()=>{if(pages.length)render();};
+$('gapPx').onchange=()=>{if(pages.length)render();};
 
 /* ===== ফটো কার্ড মোড ===== */
 const CW=1200,CH=1200,SANS='"Inter","DM Sans","Segoe UI",Arial,sans-serif';
@@ -479,7 +483,7 @@ async function drawCard(info,logoImg,opt){
  const blob=await canvasBlob(c);
  return {blob,shrunk,overflow};
 }
-function cardOpt(){return {size:clampN($('cFont').value,20,80,46),label:$('cLabel').value,cat:$('cCategory').value.trim()||'সাধারণ জ্ঞান',brand:$('cBrand').value.trim()||'StudyPulse',sub:$('cSub').value.trim(),fb:$('cFb').value.trim()};}
+function cardOpt(){return {size:clampN($('cFont').value,20,100,46),label:$('cLabel').value,cat:$('cCategory').value.trim()||'সাধারণ জ্ঞান',brand:$('cBrand').value.trim()||'StudyPulse',sub:$('cSub').value.trim(),fb:$('cFb').value.trim()};}
 function cardName(i){return `StudyPulse-Card-${String(i+1).padStart(2,'0')}.png`;}
 let cardBusy=false;
 async function renderCards(){
@@ -524,8 +528,8 @@ $('cSample').onclick=()=>{$('cSource').value=cardSample;cardIndex=0;renderCards(
 $('cClear').onclick=()=>{$('cSource').value='';cardBlobs=[];cardIndex=0;showCard();setCardButtons(false);$('cStatus').textContent='';};
 $('cPrev').onclick=()=>{if(!cardBlobs.length)return;cardIndex=(cardIndex-1+cardBlobs.length)%cardBlobs.length;showCard();};
 $('cNext').onclick=()=>{if(!cardBlobs.length)return;cardIndex=(cardIndex+1)%cardBlobs.length;showCard();};
-$('cFontUp').onclick=()=>{$('cFont').value=clampN($('cFont').value,20,80,46)+1;if(cardBlobs.length)renderCards();};
-$('cFontDown').onclick=()=>{$('cFont').value=clampN($('cFont').value,20,80,46)-1;if(cardBlobs.length)renderCards();};
+$('cFontUp').onclick=()=>{$('cFont').value=clampN($('cFont').value,20,100,46)+1;if(cardBlobs.length)renderCards();};
+$('cFontDown').onclick=()=>{$('cFont').value=clampN($('cFont').value,20,100,46)-1;if(cardBlobs.length)renderCards();};
 let _ct=null;['cFont','cCategory','cLabel','cBrand','cSub','cFb'].forEach(id=>$(id).addEventListener('change',()=>{if(!cardBlobs.length)return;clearTimeout(_ct);_ct=setTimeout(renderCards,300);}));
 $('cDownloadBtn').onclick=()=>cardBlobs.length&&saveBlob(cardBlobs[cardIndex],cardName(cardIndex));
 $('cDownloadAllBtn').onclick=async()=>{
