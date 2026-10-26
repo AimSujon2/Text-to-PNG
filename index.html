@@ -17,7 +17,7 @@ main{max-width:1150px;margin:22px auto;padding:0 16px;display:grid;grid-template
 .panel{background:#fff;border:1px solid #e0e5ef;border-radius:16px;padding:18px;box-shadow:0 5px 22px #1b2d5510}
 h2{font-size:18px;margin:0 0 12px}label{display:block;font-weight:650;margin:12px 0 6px}
 textarea,input,select{width:100%;border:1px solid #cbd3e2;border-radius:9px;padding:11px;font:inherit;background:#fff;color:#172033}
-textarea{min-height:340px;resize:vertical;line-height:1.65}
+textarea{min-height:340px;resize:vertical;line-height:1.65;overflow-y:hidden}
 .row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1;min-width:120px}
 button{border:0;border-radius:10px;padding:11px 15px;font:inherit;font-weight:700;cursor:pointer;background:#e8ecf8;color:#17245b}
 button.primary{background:var(--blue);color:white}button.dark{background:#17245b;color:white}
@@ -132,7 +132,7 @@ const sample=`৫. কোনো সংখ্যার ২/৩ অংশ ঐ স�
 function toBn(s){return String(s).replace(/[0-9]/g,d=>'০১২৩৪৫৬৭৮৯'[+d]);}
 function parseQuestions(text){
  const lines=text.replace(/\r/g,'').split('\n');
- const start=/^\s*(?:প্রশ্ন\s*)?([০-৯0-9]{1,3})\s*[.)।ঃ:]\s*/;
+ const start=/^\s*(?:প্রশ্ন\s*)?([০-৯0-9]{1,5})\s*[.)।ঃ:]\s*/;
  if(!lines.some(l=>start.test(l))){ // নম্বর না থাকলে ফাঁকা লাইন দিয়ে আলাদা করবে
   return text.replace(/\r/g,'').split(/\n\s*\n+/).map(x=>x.trim()).filter(Boolean);
  }
@@ -189,18 +189,25 @@ function setFor(p,gFont,gMargin){
 }
 function prepareBlock(block, base, ctx, mpx){
  const lines=block.split('\n'), result=[], maxW=W-2*mpx;
- for(const raw of lines){
+ const isExp=t=>/^\s*ব্যাখ্যা\s*[:：]/.test(t);
+ // লাল হবে: (১) প্রশ্নের পরের লাইন, (২) ব্যাখ্যার ঠিক উপরের লাইন — "উত্তর:" লেখা থাকুক বা না থাকুক
+ const filled=[];lines.forEach((r,i)=>{if(r.trim())filled.push(i);});
+ const red=new Set();
+ if(filled.length>1&&!isExp(lines[filled[1]]))red.add(filled[1]);
+ const ep=filled.findIndex(i=>isExp(lines[i]));
+ if(ep>1)red.add(filled[ep-1]);
+ lines.forEach((raw,idx)=>{
   const text=raw.trim();
   let kind='normal';
-  if(/^\s*উত্তর\s*[:：]/.test(text))kind='answer';
-  else if(/^\s*ব্যাখ্যা\s*[:：]/.test(text))kind='explain';
-  else if(/^\s*(?:প্রশ্ন\s*)?[০-৯0-9]{1,3}\s*[.)।ঃ:]/.test(text))kind='question';
-  if(!text){result.push({kind,text:'',height:13});continue}
+  if(red.has(idx)||/^\s*উত্তর\s*[:：]/.test(text))kind='answer';
+  else if(isExp(text))kind='explain';
+  else if(/^\s*(?:প্রশ্ন\s*)?[০-৯0-9]{1,5}\s*[.)।ঃ:]/.test(text))kind='question';
+  if(!text){result.push({kind,text:'',height:13});return}
   const size=kind==='question'?base+4:base;
   ctx.font='bold '+size+'px '+BN_FONT;
   const wrapped=wrap(ctx,text,maxW);
   wrapped.forEach(t=>result.push({kind,text:t,size,height:size+12}));
- }
+ });
  return result;
 }
 // প্রতিটি পেজ নিজের ফন্ট ও মার্জিন অনুযায়ী ভরবে; যে প্রশ্ন আঁটে না সেটি পরের পেজে যাবে
@@ -357,8 +364,8 @@ $('openBtn').onclick=()=>{
  setTimeout(()=>URL.revokeObjectURL(url),120000);
 };
 $('renderBtn').onclick=()=>{pageIndex=0;render();};
-$('sampleBtn').onclick=()=>{$('source').value=sample;overrides={};pageIndex=0;render();};
-$('clearBtn').onclick=()=>{$('source').value='';pages=[];pageMeta=[];overrides={};pageIndex=0;showPage();pageBlobs=[];setDownloadButtons(false);$('status').textContent='লেখা মুছে ফেলা হয়েছে।';};
+$('sampleBtn').onclick=()=>{$('source').value=sample;autoGrow($('source'));overrides={};pageIndex=0;render();};
+$('clearBtn').onclick=()=>{$('source').value='';autoGrow($('source'));pages=[];pageMeta=[];overrides={};pageIndex=0;showPage();pageBlobs=[];setDownloadButtons(false);$('status').textContent='লেখা মুছে ফেলা হয়েছে।';};
 $('prevBtn').onclick=()=>{if(pages.length){pageIndex=(pageIndex+pages.length-1)%pages.length;showPage();}};
 $('nextBtn').onclick=()=>{if(pages.length){pageIndex=(pageIndex+1)%pages.length;showPage();}};
 $('downloadBtn').onclick=()=>pages.length&&download(pageIndex);
@@ -411,7 +418,7 @@ function parseCardBlock(block){
  return {cat,q,a,e};
 }
 function qFirst(line,mode){
- const numRe=/^\s*(?:প্রশ্ন\s*)?[০-৯0-9]{1,3}\s*[.)।ঃ:]\s*/;
+ const numRe=/^\s*(?:প্রশ্ন\s*)?[০-৯0-9]{1,5}\s*[.)।ঃ:]\s*/;
  if(mode==='number')return line;
  
  let rest = line.replace(numRe,'').replace(/^\s*প্রশ্ন\s*[:：]\s*/, '');
@@ -524,8 +531,8 @@ function buildCardDl(){
 }
 function setCardButtons(on){['cDownloadBtn','cDownloadAllBtn','cZipBtn','cOpenBtn'].forEach(id=>$(id).disabled=!on);if(!on)$('cDl').innerHTML='';}
 $('cRender').onclick=()=>{cardIndex=0;renderCards();};
-$('cSample').onclick=()=>{$('cSource').value=cardSample;cardIndex=0;renderCards();};
-$('cClear').onclick=()=>{$('cSource').value='';cardBlobs=[];cardIndex=0;showCard();setCardButtons(false);$('cStatus').textContent='';};
+$('cSample').onclick=()=>{$('cSource').value=cardSample;autoGrow($('cSource'));cardIndex=0;renderCards();};
+$('cClear').onclick=()=>{$('cSource').value='';autoGrow($('cSource'));cardBlobs=[];cardIndex=0;showCard();setCardButtons(false);$('cStatus').textContent='';};
 $('cPrev').onclick=()=>{if(!cardBlobs.length)return;cardIndex=(cardIndex-1+cardBlobs.length)%cardBlobs.length;showCard();};
 $('cNext').onclick=()=>{if(!cardBlobs.length)return;cardIndex=(cardIndex+1)%cardBlobs.length;showCard();};
 $('cFontUp').onclick=()=>{$('cFont').value=clampN($('cFont').value,20,100,46)+1;if(cardBlobs.length)renderCards();};
@@ -551,10 +558,14 @@ $('cOpenBtn').onclick=()=>{
  if(!window.open(url,'_blank'))$('cStatus').textContent='নতুন ট্যাব খোলা যায়নি — পপ-আপের অনুমতি দিন, অথবা প্রিভিউ ছবিতে চেপে ধরে Save করুন।';
  setTimeout(()=>URL.revokeObjectURL(url),120000);
 };
+/* ===== টেক্সট বক্স: কোনো সীমা নেই, লেখা অনুযায়ী বক্স বড় হবে ===== */
+function autoGrow(el){el.style.height='auto';el.style.height=(el.scrollHeight+6)+'px';}
+['source','cSource'].forEach(id=>{const el=$(id);el.removeAttribute('maxlength');el.addEventListener('input',()=>autoGrow(el));});
+window.addEventListener('resize',()=>['source','cSource'].forEach(id=>autoGrow($(id))));
 /* ===== ট্যাব ===== */
 function setMode(m){
  $('modePage').hidden=m!=='page';$('modeCard').hidden=m!=='card';
- $('tabPage').classList.toggle('active',m==='page');$('tabCard').classList.toggle('active',m==='card');
+ $('tabPage').classList.toggle('active',m==='page');autoGrow($(m==='page'?'source':'cSource'));$('tabCard').classList.toggle('active',m==='card');
 }
 $('tabPage').onclick=()=>setMode('page');$('tabCard').onclick=()=>setMode('card');
 </script>
